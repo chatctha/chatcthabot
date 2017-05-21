@@ -12,7 +12,7 @@ class LineController extends \yii\web\Controller
     public function beforeAction($action)
     {
         if ($action->id == 'callback') {
-            $this->enableCsrfValidation = false; //ª‘¥°“√„™Èß“π csrf
+            $this->enableCsrfValidation = false; //¬ª√î¬¥¬°√í√É√£¬™√©¬ß√í¬π csrf
         }
     
         return parent::beforeAction($action);
@@ -23,13 +23,13 @@ class LineController extends \yii\web\Controller
     {
         
         $json_string = file_get_contents('php://input');
-        $jsonObj = json_decode($json_string); //√—∫ JSON ¡“ decode ‡ªÁπ StdObj
-        $to = $jsonObj->{"result"}[0]->{"content"}->{"from"}; //À“ºŸÈ Ëß
-        $text = $jsonObj->{"result"}[0]->{"content"}->{"text"}; //À“¢ÈÕ§«“¡∑’Ë‚æ ¡“
+        $jsonObj = json_decode($json_string); //√É√ë¬∫ JSON √Å√í decode √†¬ª√ß¬π StdObj
+        $to = $jsonObj->{"result"}[0]->{"content"}->{"from"}; //√ã√í¬º√ô√©√ä√®¬ß
+        $text = $jsonObj->{"result"}[0]->{"content"}->{"text"}; //√ã√í¬¢√©√ç¬§√á√í√Å¬∑√ï√®√¢¬æ√ä√Å√í
         
-        $text_ex = explode(':', $text); //‡Õ“¢ÈÕ§«“¡¡“·¬° : ‰¥È‡ªÁπ Array
+        $text_ex = explode(':', $text); //√†√ç√í¬¢√©√ç¬§√á√í√Å√Å√í√°√Ç¬° : √§¬¥√©√†¬ª√ß¬π Array
         
-        if($text_ex[0] == "Õ¬“°√ŸÈ"){ //∂È“¢ÈÕ§«“¡§◊Õ "Õ¬“°√ŸÈ" „ÀÈ∑”°“√¥÷ß¢ÈÕ¡Ÿ≈®“° Wikipedia À“®“°‰∑¬°ËÕπ
+        if($text_ex[0] == "√ç√Ç√í¬°√É√ô√©"){ //¬∂√©√í¬¢√©√ç¬§√á√í√Å¬§√ó√ç "√ç√Ç√í¬°√É√ô√©" √£√ã√©¬∑√ì¬°√í√É¬¥√ñ¬ß¬¢√©√ç√Å√ô√Ö¬®√í¬° Wikipedia √ã√í¬®√í¬°√§¬∑√Ç¬°√®√ç¬π
             //https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=PHP
             $ch1 = curl_init();
             curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
@@ -45,7 +45,7 @@ class LineController extends \yii\web\Controller
                 $result_text = $val['extract'];
             }
             
-            if(empty($result_text)){//∂È“‰¡Ëæ∫„ÀÈÀ“®“° en
+            if(empty($result_text)){//¬∂√©√í√§√Å√®¬æ¬∫√£√ã√©√ã√í¬®√í¬° en
                 $ch1 = curl_init();
                 curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
@@ -60,12 +60,12 @@ class LineController extends \yii\web\Controller
                     $result_text = $val['extract'];
                 }
             }
-            if(empty($result_text)){//À“®“° en ‰¡Ëæ∫°Á∫Õ°«Ë“ ‰¡Ëæ∫¢ÈÕ¡Ÿ≈ µÕ∫°≈—∫‰ª
-                $result_text = '‰¡Ëæ∫¢ÈÕ¡Ÿ≈';
+            if(empty($result_text)){//√ã√í¬®√í¬° en √§√Å√®¬æ¬∫¬°√ß¬∫√ç¬°√á√®√í √§√Å√®¬æ¬∫¬¢√©√ç√Å√ô√Ö ¬µ√ç¬∫¬°√Ö√ë¬∫√§¬ª
+                $result_text = '√§√Å√®¬æ¬∫¬¢√©√ç√Å√ô√Ö';
             }
             $response_format_text = ['contentType'=>1,"toType"=>1,"text"=>$result_text];
             
-        }else if($text_ex[0] == "Õ“°“»"){//∂È“æ‘¡æÏ¡“«Ë“ Õ“°“» °Á„ÀÈ‰ª¥÷ß API ®“° wunderground ¡“
+        }else if($text_ex[0] == "√ç√í¬°√í√à"){//¬∂√©√í¬æ√î√Å¬æ√¨√Å√í√á√®√í √ç√í¬°√í√à ¬°√ß√£√ã√©√§¬ª¬¥√ñ¬ß API ¬®√í¬° wunderground √Å√í
             //http://api.wunderground.com/api/yourkey/forecast/lang:TH/q/Thailand/%E0%B8%81%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B9%80%E0%B8%97%E0%B8%9E%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%99%E0%B8%84%E0%B8%A3.json
             $ch1 = curl_init();
             curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
@@ -77,19 +77,19 @@ class LineController extends \yii\web\Controller
             $obj = json_decode($result1, true);
             if(isset($obj['forecast']['txt_forecast']['forecastday'][0]['fcttext_metric'])){
                 $result_text = $obj['forecast']['txt_forecast']['forecastday'][0]['fcttext_metric'];
-            }else{//∂È“‰¡Ë‡®Õ°—∫µÕ∫°≈—∫«Ë“‰¡Ëæ∫¢ÈÕ¡Ÿ≈
-                $result_text = '‰¡Ëæ∫¢ÈÕ¡Ÿ≈';
+            }else{//¬∂√©√í√§√Å√®√†¬®√ç¬°√ë¬∫¬µ√ç¬∫¬°√Ö√ë¬∫√á√®√í√§√Å√®¬æ¬∫¬¢√©√ç√Å√ô√Ö
+                $result_text = '√§√Å√®¬æ¬∫¬¢√©√ç√Å√ô√Ö';
             }
             
             $response_format_text = ['contentType'=>1,"toType"=>1,"text"=>$result_text];
-        }else if($text == '∫Õ°¡“'){//§”Õ◊ËπÊ ∑’ËµÈÕß°“√„ÀÈ Bot µÕ∫°≈—∫‡¡◊ËÕ‚æ §”π’È¡“ ‡™Ëπ‚æ «Ë“ ∫Õ°¡“ „ÀÈµÕ∫«Ë“ §«“¡≈—∫π–
-            $response_format_text = ['contentType'=>1,"toType"=>1,"text"=>"§«“¡≈—∫π–"];
-        }else{//πÕ°π—Èπ„ÀÈ‚æ   «— ¥’
-            $response_format_text = ['contentType'=>1,"toType"=>1,"text"=>" «— ¥’"];
+        }else if($text == '¬∫√ç¬°√Å√í'){//¬§√ì√ç√ó√®¬π√¶ ¬∑√ï√®¬µ√©√ç¬ß¬°√í√É√£√ã√© Bot ¬µ√ç¬∫¬°√Ö√ë¬∫√†√Å√ó√®√ç√¢¬æ√ä¬§√ì¬π√ï√©√Å√í √†¬™√®¬π√¢¬æ√ä√á√®√í ¬∫√ç¬°√Å√í √£√ã√©¬µ√ç¬∫√á√®√í ¬§√á√í√Å√Ö√ë¬∫¬π√ê
+            $response_format_text = ['contentType'=>1,"toType"=>1,"text"=>"¬§√á√í√Å√Ö√ë¬∫¬π√ê"];
+        }else{//¬π√ç¬°¬π√ë√©¬π√£√ã√©√¢¬æ√ä √ä√á√ë√ä¬¥√ï
+            $response_format_text = ['contentType'=>1,"toType"=>1,"text"=>"√ä√á√ë√ä¬¥√ï"];
         }
 
         // toChannel?eventType
-        $post_data = ["to"=>[$to],"toChannel"=>"1383378250","eventType"=>"138311608800106203","content"=>$response_format_text]; // Ëß¢ÈÕ¡Ÿ≈‰ª
+        $post_data = ["to"=>[$to],"toChannel"=>"1383378250","eventType"=>"138311608800106203","content"=>$response_format_text]; //√ä√®¬ß¬¢√©√ç√Å√ô√Ö√§¬ª
         
         $ch = curl_init("https://trialbot-api.line.me/v1/events");
         curl_setopt($ch, CURLOPT_POST, true);
@@ -98,9 +98,9 @@ class LineController extends \yii\web\Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json; charser=UTF-8',
-            'X-Line-ChannelID: YOUR ChannelID',
-            'X-Line-ChannelSecret: YOUR ChannelSecret',
-            'X-Line-Trusted-User-With-ACL: YOUR MID'
+            'X-Line-ChannelID: 1514503495',
+            'X-Line-ChannelSecret: 546930ef36b33b86e770a4477a5786c2',
+            'X-Line-Trusted-User-With-ACL: Uba681ccc072bd5d1f574e4c516ea6c1a'
         ));
         $result = curl_exec($ch);
         curl_close($ch);
