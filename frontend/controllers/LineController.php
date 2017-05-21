@@ -3,7 +3,6 @@ namespace frontend\controllers;
 
 use Yii;
 use yii\web\Response;
-$access_token = '26mLZVOEtRXaQIudkprlUPDieWqKn4UJvCT+fnJtZuottjSgJFx6vyjyViS1QZT7X9N0YVVm6tSdVln2CwHqaYSKv960dHeXv1DT8zyyIpVG25/D+xk2sW3KHzXI+akkzCTPzoqJ1SXT0FwJg/Mp/QdB04t89/1O/w1cDnyilFU=';
 
 class LineController extends \yii\web\Controller
 {
@@ -90,19 +89,22 @@ class LineController extends \yii\web\Controller
         }
 
         // toChannel?eventType
-        $post_data = ["to"=>[$to],"toChannel"=>"1514503495","eventType"=>"138311608800106203","content"=>$response_format_text]; //ส่งข้อมูลไป
+        $post_data = ["to"=>[$to],"toChannel"=>"1383378250","eventType"=>"138311608800106203","content"=>$response_format_text]; //ส่งข้อมูลไป
         
         $ch = curl_init("https://trialbot-api.line.me/v1/events");
-		$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json; charser=UTF-8',
+            'X-Line-ChannelID: YOUR ChannelID',
+            'X-Line-ChannelSecret: YOUR ChannelSecret',
+            'X-Line-Trusted-User-With-ACL: YOUR MID'
+        ));
         $result = curl_exec($ch);
         curl_close($ch);
         
     }
 }
-echo "OK";
 ?>
